@@ -1,5 +1,6 @@
 #!/bin/sh
-#launcher.sh # navigate to home directory, then to this directory, then execute python script, then back home
+#launcher.sh
+#Run the fan-control-app
 locale
 cd /
 cd /home/yournamehere/Desktop/fan-control-app
