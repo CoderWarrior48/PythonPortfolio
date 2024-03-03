@@ -5,8 +5,8 @@ Ever get annoyed of the fan on your Pi? Following this amazing tutorial [here](h
 
 For me however, that wasn't enough. I added a control app with python to switch the fan from automatic to manual mode. This control can easily be accessed from the taskbar and runs on python with tkinter: 
 
-[!WARNING]
-These programs access eachother in your system! File paths must be configured to your system and permissions enabled to execute certain bash files.
+> [!WARNING]
+> These programs access eachother in your system! File paths must be configured to your system and permissions enabled to execute certain bash files.
 
 ## Configuration
 
