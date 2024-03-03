@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Fan Control
+Exec=/home/yourpiname/Desktop/fan-control-app/launcher.sh
+Comment=
+Terminal=false
+Icon=gnome-panel-launcher
+Type=Application
