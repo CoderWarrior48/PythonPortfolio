@@ -1,4 +1,6 @@
 from game import *  
+import os
+os.environ['SDL_AUDIODRIVER'] = 'dsp'
 
 display = game_init(800,800,'RoomGen')
 map = generate_map(51, 51, 4)
