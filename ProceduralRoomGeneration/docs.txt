@@ -1,0 +1,118 @@
+from game import *  
+display = game_init(800,800,'RoomGen')
+
+angle = 180
+direction_map = {
+  180 : [0,1],
+  90 : [-1,0],
+  0 : [0,-1],
+  -90 : [1,0],
+}
+zoom = 30
+distance = 4
+avatar = pygame.transform.scale(pygame.image.load("./avatar.png").convert_alpha(),(zoom,zoom))
+playerX = distance + 1
+playerY = distance + 1
+freeMove = False
+x = 26
+y = 26
+previousX = 0
+previousY = 0
+stationaryGenerated = False
+map = generate_map(51, 51, 4)
+
+
+def update_game():
+  global x, y, map, distance, zoom, previousX, previousY, avatar, playerX, playerY, freeMove
+
+
+  view = player_view(x, y, map, distance)
+
+  if not isinstance(view, list): #if not working, returning something else:
+    x = previousX
+    y = previousY
+    view = player_view(x, y, map, distance)
+    print('stationary')
+  if view != 'wall': #if edge
+    freeMove = view
+
+
+  print_map(view, zoom)
+  display.blit(avatar,((playerX-1)*(zoom+1),(playerY-1)*(zoom+1)))
+
+  previousX = x
+  previousY = y
+  pygame.display.flip()
+
+update_game()
+
+
+while True:
+
+  for event in pygame.event.get():
+      if event.type == QUIT:
+        pygame.quit()
+        sys.exit()
+
+  keys = pygame.key.get_pressed()
+
+  if keys[pygame.K_UP]:
+      print("Key up has been pressed")
+      if freeMove == False:
+        x -= direction_map[angle][0]
+        y -= direction_map[angle][1]
+        stationaryGenerated = False
+      elif playerX < 5 and freeMove == True:
+        x -= direction_map[angle][0]
+        # y -= direction_map[angle][1]
+        playerX += 1
+        freeMove = False
+      else:
+        if stationaryGenerated == False:
+          stationaryMap = player_view(x + direction_map[angle][0],y + direction_map[angle][1],map, distance)
+          stationaryGenerated = True
+        # print('free:',stationaryMap[playerY-1][playerX-1])
+        try:
+          if stationaryMap[distance][playerX - direction_map[angle][0]] != 1:
+            playerX -= direction_map[angle][0]
+            y -= direction_map[angle][1]
+        except:
+         print('Out of range')
+      update_game()
+      sleep(0.15)
+
+  if keys[pygame.K_LEFT]:
+      print("Key left has been pressed")
+      avatar = pygame.transform.rotate(avatar, 90)
+      angle += 90
+      update_game()
+      sleep(0.15)
+
+  if keys[pygame.K_DOWN]:
+      print("Key down has been pressed")
+      if freeMove == False:
+        x += direction_map[angle][0]
+        y += direction_map[angle][1]
+      else:
+        playerX += direction_map[angle][0]
+        playerY += direction_map[angle][1]
+      update_game()
+      sleep(0.15)
+
+  if keys[pygame.K_RIGHT]:
+      print("Key right has been pressed")
+      avatar = pygame.transform.rotate(avatar, -90)
+      angle -= 90
+      update_game()
+      sleep(0.15)
+
+  if angle > 180:
+    angle -= 360
+  elif angle <= -180:
+    angle += 360
+
+
+  pygame.event.pump()
+
+
+
